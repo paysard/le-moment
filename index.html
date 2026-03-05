@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Le Moment — L'essentiel, sans détour</title>
+<meta name="description" content="Le Moment — L'actualité du Cameroun et de l'Afrique. Politique, Économie, Société, Diaspora, Opportunités. L'essentiel, sans détour."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=Source+Serif+4:wght@300;400&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root{
+  --cream:#F9F8F4;--ink:#111110;--ink2:#444442;
+  --rule:#D8D5CC;--red:#C8102E;--gold:#B8860B;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;}
+.serif{font-family:'Playfair Display',Georgia,serif;}
+.sserif{font-family:'Source Serif 4',Georgia,serif;}
+
+/* ticker */
+.ticker{display:inline-block;white-space:nowrap;animation:tick 32s linear infinite;}
+@keyframes tick{from{transform:translateX(100vw)}to{transform:translateX(-100%)}}
+
+/* skeleton */
+.sk{background:linear-gradient(90deg,#e8e5dc 25%,#f0ece3 50%,#e8e5dc 75%);background-size:200% 100%;animation:skshim 1.4s infinite;border-radius:3px;}
+@keyframes skshim{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* nav */
+.nlink{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;padding:.2rem 0;border-bottom:2px solid transparent;color:#888;background:none;border:none;white-space:nowrap;transition:all .15s;}
+.nlink:hover,.nlink.on{color:var(--red);border-bottom:2px solid var(--red);}
+
+/* hover title */
+.htitle{font-family:'Playfair Display',Georgia,serif;cursor:pointer;transition:color .18s;}
+.htitle:hover{color:var(--red);}
+
+/* badge */
+.badge{font-size:.57rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.18rem .5rem;border-radius:3px;display:inline-block;}
+
+/* img zoom */
+.izoom{overflow:hidden;}
+.izoom img{width:100%;height:100%;object-fit:cover;transition:transform .5s;}
+.izoom:hover img{transform:scale(1.04);}
+
+/* reader overlay */
+#reader{position:fixed;inset:0;z-index:400;background:#fff;overflow-y:auto;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);}
+#reader.open{transform:translateY(0);}
+
+/* admin overlay */
+#admin{position:fixed;inset:0;z-index:500;background:rgba(10,10,9,.78);backdrop-filter:blur(6px);display:none;overflow-y:auto;align-items:flex-start;justify-content:center;padding:1.5rem 1rem;}
+#admin.open{display:flex;}
+
+/* legal overlay */
+#legal-ov{position:fixed;inset:0;z-index:450;background:#fff;overflow-y:auto;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);}
+#legal-ov.open{transform:translateY(0);}
+
+/* toast */
+#toast{position:fixed;bottom:1.2rem;right:1.2rem;z-index:9999;background:#111;color:var(--cream);padding:.7rem 1.1rem;border-radius:8px;font-size:.8rem;box-shadow:0 8px 32px rgba(0,0,0,.35);opacity:0;transform:translateY(12px);transition:all .3s;pointer-events:none;}
+#toast.show{opacity:1;transform:translateY(0);}
+
+/* mob menu */
+#mobmenu{position:fixed;inset:0;z-index:300;background:#fff;transform:translateX(-100%);transition:transform .3s;}
+#mobmenu.open{transform:translateX(0);}
+
+/* live dot */
+.ldot{width:7px;height:7px;background:var(--red);border-radius:50%;animation:lpulse 1.5s ease-in-out infinite;display:inline-block;}
+@keyframes lpulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* fields */
+.field{width:100%;background:var(--cream);border:1px solid var(--rule);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:.85rem;padding:.6rem .75rem;border-radius:6px;outline:none;transition:border-color .2s;}
+.field:focus{border-color:var(--gold);}
+.flabel{display:block;font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#888;margin-bottom:.3rem;}
+
+/* legal content styles */
+.legal-body{max-width:700px;margin:0 auto;padding:2rem 1.2rem 5rem;}
+.legal-body h2{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;color:var(--ink);margin-bottom:1.5rem;padding-bottom:.75rem;border-bottom:3px solid var(--red);}
+.legal-body h3{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--ink);margin:1.5rem 0 .5rem;}
+.legal-body p{font-family:'Source Serif 4',serif;font-size:.95rem;line-height:1.85;color:#444;margin-bottom:1rem;}
+.legal-body a{color:var(--red);text-decoration:underline;}
+.legal-body ul{padding-left:1.4rem;margin-bottom:1rem;}
+.legal-body ul li{font-family:'Source Serif 4',serif;font-size:.95rem;line-height:1.85;color:#444;margin-bottom:.4rem;}
+.legal-body .info-box{background:#F3F1EB;border-left:3px solid var(--gold);padding:1rem 1.2rem;margin:1.2rem 0;border-radius:0 6px 6px 0;}
+
+@keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.fin{animation:fadein .4s ease forwards;}
+
+/* footer links */
+.flink{font-size:.65rem;color:#888;cursor:pointer;transition:color .15s;background:none;border:none;text-align:left;}
+.flink:hover{color:var(--cream);}
+
+/* scrollbar */
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:var(--rule);border-radius:2px;}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     MENU MOBILE
+══════════════════════════════════ -->
+<div id="mobmenu">
+  <div style="padding:1rem 1.5rem;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;">
+    <div>
+      <span class="serif" style="font-size:1.3rem;font-weight:900;display:block;">Le Moment</span>
+      <span style="font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:#999;">L'essentiel, sans détour</span>
+    </div>
+    <button onclick="closeMob()" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:#666;">✕</button>
+  </div>
+  <nav style="padding:.5rem 1.5rem;">
+    <button class="nlink" style="display:block;width:100%;text-align:left;padding:.85rem .5rem;border-bottom:1px solid #F0EDE5;font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--ink);" onclick="filterCat('');closeMob()">Accueil</button>
+    <button class="nlink" style="display:block;width:100%;text-align:left;padding:.85rem .5rem;border-bottom:1px solid #F0EDE5;font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--ink);" onclick="filterCat('Politique');closeMob()">Politique</button>
+    <button class="nlink" style="display:block;width:100%;text-align:left;padding:.85rem .5rem;border-bottom:1px solid #F0EDE5;font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--ink);" onclick="filterCat('Économie & Business');closeMob()">Économie & Business</button>
+    <button class="nlink" style="display:block;width:100%;text-align:left;padding:.85rem .5rem;border-bottom:1px solid #F0EDE5;font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--ink);" onclick="filterCat('Société');closeMob()">Société</button>
+    <button class="nlink" style="display:block;width:100%;text-align:left;padding:.85rem .5rem;border-bottom:1px solid #F0EDE5;font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--ink);" onclick="filterCat('Diaspora');closeMob()">Diaspora</button>
+    <button class="nlink" style="display:block;width:100%;text-align:left;padding:.85rem .5rem;border-bottom:1px solid #F0EDE5;font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--ink);" onclick="filterCat('Opportunités');closeMob()">Opportunités</button>
+    <button class="nlink" style="display:block;width:100%;text-align:left;padding:.85rem .5rem;border-bottom:1px solid #F0EDE5;font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--ink);" onclick="filterCat('International');closeMob()">International</button>
+    <button class="nlink" style="display:block;width:100%;text-align:left;padding:.85rem .5rem;border-bottom:1px solid #F0EDE5;font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--ink);" onclick="filterCat('Culture & Sport');closeMob()">Culture & Sport</button>
+    <button class="nlink" style="display:block;width:100%;text-align:left;padding:.85rem .5rem;font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--ink);" onclick="filterCat('Opinion');closeMob()">Opinion</button>
+  </nav>
+</div>
+
+<!-- ══════════════════════════════════
+     HEADER FIXE
+══════════════════════════════════ -->
+<header id="hdr" style="position:sticky;top:0;z-index:100;background:rgba(249,248,244,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule);">
+  <!-- Breaking ticker -->
+  <div style="background:var(--red);overflow:hidden;padding:.36rem 0;">
+    <div class="ticker" style="font-size:.63rem;font-weight:600;color:white;letter-spacing:.05em;">
+      &nbsp;&nbsp;⚡ EN DIRECT · L'actualité du Cameroun en temps réel · Politique · Économie · Société · Diaspora · Opportunités · Le Moment — L'essentiel, sans détour &nbsp;&nbsp;&nbsp;
+    </div>
+  </div>
+  <!-- Logo row -->
+  <div style="padding:.75rem 1.2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ECEAE0;">
+    <button onclick="document.getElementById('mobmenu').classList.add('open')" style="background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:4px;padding:2px;">
+      <span style="display:block;width:20px;height:2px;background:var(--ink);"></span>
+      <span style="display:block;width:20px;height:2px;background:var(--ink);"></span>
+      <span style="display:block;width:14px;height:2px;background:var(--ink);"></span>
+    </button>
+    <div style="text-align:center;flex:1;">
+      <h1 class="serif" onclick="filterCat('')" style="font-size:clamp(1.5rem,4vw,2.4rem);font-weight:900;letter-spacing:-.02em;cursor:pointer;color:var(--ink);line-height:1;">Le Moment</h1>
+      <p style="font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:#999;margin-top:.2rem;">L'essentiel, sans détour</p>
+      <p id="hdate" style="font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:#bbb;margin-top:.1rem;"></p>
+    </div>
+    <div style="display:flex;gap:.6rem;align-items:center;">
+      <button onclick="toggleSearch()" style="background:none;border:none;cursor:pointer;color:#666;padding:4px;">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </button>
+      <button onclick="openLegal('newsletter')" style="background:var(--ink);color:var(--cream);border:none;font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.38rem .8rem;cursor:pointer;transition:background .18s;" onmouseover="this.style.background='var(--red)'" onmouseout="this.style.background='var(--ink)'">S'abonner</button>
+    </div>
+  </div>
+  <!-- Search bar -->
+  <div id="searchbar" style="display:none;padding:.55rem 1.2rem;border-bottom:1px solid #ECEAE0;">
+    <input id="searchinput" class="field" placeholder="Rechercher dans Le Moment…" oninput="renderAll()" style="max-width:480px;display:block;margin:0 auto;">
+  </div>
+  <!-- Desktop nav -->
+  <nav style="display:flex;justify-content:center;gap:1.2rem;padding:.5rem 1rem;overflow-x:auto;">
+    <button class="nlink on" onclick="filterCat('',this)">Accueil</button>
+    <button class="nlink" onclick="filterCat('Politique',this)">Politique</button>
+    <button class="nlink" onclick="filterCat('Économie & Business',this)">Économie</button>
+    <button class="nlink" onclick="filterCat('Société',this)">Société</button>
+    <button class="nlink" onclick="filterCat('Diaspora',this)">Diaspora</button>
+    <button class="nlink" onclick="filterCat('Opportunités',this)">Opportunités</button>
+    <button class="nlink" onclick="filterCat('International',this)">International</button>
+    <button class="nlink" onclick="filterCat('Culture & Sport',this)">Culture & Sport</button>
+    <button class="nlink" onclick="filterCat('Opinion',this)">Opinion</button>
+  </nav>
+</header>
+
+<!-- ══════════════════════════════════
+     MAIN
+══════════════════════════════════ -->
+<main id="main" style="max-width:1080px;margin:0 auto;padding:1.5rem 1.1rem 5rem;">
+
+  <!-- Skeleton loading -->
+  <div id="skeleton">
+    <div style="display:grid;grid-template-columns:1.1fr 1fr;gap:2rem;margin-bottom:2rem;">
+      <div class="sk" style="height:260px;"></div>
+      <div style="display:flex;flex-direction:column;gap:.8rem;padding-top:.5rem;">
+        <div class="sk" style="height:12px;width:35%;"></div>
+        <div class="sk" style="height:32px;"></div>
+        <div class="sk" style="height:32px;width:80%;"></div>
+        <div class="sk" style="height:16px;"></div>
+        <div class="sk" style="height:16px;width:75%;"></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;">
+      <div><div class="sk" style="height:150px;margin-bottom:.6rem;"></div><div class="sk" style="height:11px;width:40%;margin-bottom:.4rem;"></div><div class="sk" style="height:18px;margin-bottom:.3rem;"></div><div class="sk" style="height:18px;width:70%;"></div></div>
+      <div><div class="sk" style="height:150px;margin-bottom:.6rem;"></div><div class="sk" style="height:11px;width:40%;margin-bottom:.4rem;"></div><div class="sk" style="height:18px;margin-bottom:.3rem;"></div><div class="sk" style="height:18px;width:70%;"></div></div>
+      <div><div class="sk" style="height:150px;margin-bottom:.6rem;"></div><div class="sk" style="height:11px;width:40%;margin-bottom:.4rem;"></div><div class="sk" style="height:18px;margin-bottom:.3rem;"></div><div class="sk" style="height:18px;width:70%;"></div></div>
+    </div>
+  </div>
+
+  <!-- Contenu -->
+  <div id="content" style="display:none;"></div>
+</main>
+
+<!-- ══════════════════════════════════
+     FOOTER
+══════════════════════════════════ -->
+<footer style="background:var(--ink);color:var(--cream);padding:3rem 1.5rem 2rem;">
+  <div style="max-width:1080px;margin:0 auto;">
+
+    <!-- Footer top -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2rem;padding-bottom:2rem;border-bottom:1px solid #2A2A28;">
+
+      <!-- Colonne 1 : Identité -->
+      <div>
+        <h2 class="serif" style="font-size:1.8rem;font-weight:900;margin-bottom:.4rem;">Le Moment</h2>
+        <p style="font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:#888;margin-bottom:.8rem;">L'essentiel, sans détour</p>
+        <p style="font-size:.78rem;color:#666;line-height:1.7;max-width:220px;">Média numérique indépendant dédié à l'actualité du Cameroun et de l'Afrique.</p>
+        <p style="font-size:.72rem;color:#555;margin-top:.75rem;">Douala, Cameroun · Fondé en 2026</p>
+      </div>
+
+      <!-- Colonne 2 : Rubriques -->
+      <div>
+        <p style="font-size:.6rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#555;margin-bottom:.9rem;">Rubriques</p>
+        <div style="display:flex;flex-direction:column;gap:.5rem;">
+          <button class="flink" onclick="filterCat('Politique');window.scrollTo(0,0)">Politique</button>
+          <button class="flink" onclick="filterCat('Économie & Business');window.scrollTo(0,0)">Économie & Business</button>
+          <button class="flink" onclick="filterCat('Société');window.scrollTo(0,0)">Société</button>
+          <button class="flink" onclick="filterCat('Diaspora');window.scrollTo(0,0)">Diaspora</button>
+          <button class="flink" onclick="filterCat('Opportunités');window.scrollTo(0,0)">Opportunités</button>
+          <button class="flink" onclick="filterCat('International');window.scrollTo(0,0)">International</button>
+          <button class="flink" onclick="filterCat('Culture & Sport');window.scrollTo(0,0)">Culture & Sport</button>
+          <button class="flink" onclick="filterCat('Opinion');window.scrollTo(0,0)">Opinion</button>
+        </div>
+      </div>
+
+      <!-- Colonne 3 : Informations légales -->
+      <div>
+        <p style="font-size:.6rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#555;margin-bottom:.9rem;">Informations</p>
+        <div style="display:flex;flex-direction:column;gap:.5rem;">
+          <button class="flink" onclick="openLegal('about')">À propos</button>
+          <button class="flink" onclick="openLegal('contact')">Contact</button>
+          <button class="flink" onclick="openLegal('charter')">Charte éditoriale</button>
+          <button class="flink" onclick="openLegal('advertise')">Publicité & Partenariats</button>
+          <button class="flink" onclick="openLegal('legal')">Mentions légales</button>
+          <button class="flink" onclick="openLegal('privacy')">Politique de confidentialité</button>
+          <button class="flink" onclick="openLegal('cookies')">Gestion des cookies</button>
+          <button class="flink" onclick="openLegal('correction')">Signaler une erreur</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer bottom -->
+    <div style="padding-top:1.5rem;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1rem;">
+      <p style="font-size:.65rem;color:#555;">© 2026 Le Moment — Tous droits réservés · Douala, Cameroun</p>
+      <p style="font-size:.65rem;color:#444;">Directeur de publication : <span style="color:#666;">Tutu Tina</span></p>
+      <button onclick="openAdmin()" style="background:transparent;border:1px solid #2A2A28;color:#555;font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.32rem .75rem;cursor:pointer;border-radius:4px;transition:all .2s;" onmouseover="this.style.color='#fff';this.style.borderColor='#555'" onmouseout="this.style.color='#555';this.style.borderColor='#2A2A28'">⚙ Admin</button>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════
+     READER OVERLAY
+══════════════════════════════════ -->
+<div id="reader">
+  <div style="max-width:700px;margin:0 auto;padding:0 1.2rem;">
+    <div style="position:sticky;top:0;z-index:10;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule);padding:.8rem 0;display:flex;align-items:center;justify-content:space-between;">
+      <button onclick="closeReader()" style="background:none;border:none;cursor:pointer;color:#666;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;">← Retour</button>
+      <div style="text-align:center;">
+        <span class="serif" style="font-weight:900;font-size:1rem;">Le Moment</span>
+        <span style="display:block;font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;color:#aaa;">L'essentiel, sans détour</span>
+      </div>
+      <div style="width:60px;"></div>
+    </div>
+    <div id="reader-body" style="padding:2rem 0 5rem;"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     ADMIN OVERLAY
+══════════════════════════════════ -->
+<div id="admin" onclick="handleAdminBg(event)">
+  <div style="background:#fff;border-radius:12px;width:100%;max-width:560px;box-shadow:0 24px 64px rgba(0,0,0,.3);overflow:hidden;">
+    <div style="padding:1.1rem 1.4rem;border-bottom:1px solid var(--rule);background:#FAFAF8;display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <h2 class="serif" style="font-size:1.1rem;font-weight:700;">Publier un article</h2>
+        <p style="font-size:.64rem;color:#999;margin-top:.1rem;">Le Moment · Espace rédaction</p>
+      </div>
+      <button onclick="closeAdmin()" style="background:none;border:1px solid var(--rule);border-radius:6px;padding:.28rem .6rem;cursor:pointer;color:#888;">✕</button>
+    </div>
+    <div style="padding:1.3rem 1.4rem;display:flex;flex-direction:column;gap:.9rem;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem;">
+        <div><label class="flabel">Titre *</label><input id="a-title" class="field" type="text" placeholder="Titre percutant…" oninput="checkForm()"></div>
+        <div>
+          <label class="flabel">Catégorie *</label>
+          <select id="a-cat" class="field" style="cursor:pointer;" onchange="checkForm()">
+            <option value="">— Choisir —</option>
+            <option>Politique</option>
+            <option>Économie & Business</option>
+            <option>Société</option>
+            <option>Diaspora</option>
+            <option>Opportunités</option>
+            <option>International</option>
+            <option>Culture & Sport</option>
+            <option>Opinion</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <label class="flabel">URL Image</label>
+        <input id="a-img" class="field" type="url" placeholder="https://images.unsplash.com/…" oninput="prevImg()">
+        <div id="imgprev" style="display:none;margin-top:.5rem;height:110px;border-radius:6px;overflow:hidden;border:1px solid var(--rule);background:#F3F1EB;">
+          <img id="imgprevimg" style="width:100%;height:100%;object-fit:cover;" alt="aperçu">
+        </div>
+      </div>
+      <div>
+        <label class="flabel">Contenu *</label>
+        <textarea id="a-body" class="field" style="min-height:130px;line-height:1.65;resize:vertical;" placeholder="Rédigez votre article ici…" oninput="checkForm()"></textarea>
+      </div>
+      <p id="fstatus" style="font-size:.68rem;color:#aaa;min-height:1em;">Remplissez les champs obligatoires (*)</p>
+      <div style="display:flex;gap:.7rem;">
+        <button id="pub-btn" onclick="publishArticle()" disabled style="flex:1;background:#ccc;color:#fff;border:none;border-radius:6px;padding:.68rem 1.2rem;font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:not-allowed;">🚀 Publier</button>
+        <button onclick="closeAdmin()" style="background:none;border:1px solid var(--rule);border-radius:6px;padding:.65rem 1rem;font-size:.7rem;cursor:pointer;color:#666;">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     LEGAL OVERLAY
+══════════════════════════════════ -->
+<div id="legal-ov">
+  <div style="max-width:760px;margin:0 auto;padding:0 1.2rem;">
+    <!-- Nav legal -->
+    <div style="position:sticky;top:0;z-index:10;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule);padding:.8rem 0;display:flex;align-items:center;justify-content:space-between;">
+      <button onclick="closeLegal()" style="background:none;border:none;cursor:pointer;color:#666;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;">← Retour</button>
+      <div style="text-align:center;">
+        <span class="serif" style="font-weight:900;font-size:1rem;">Le Moment</span>
+        <span style="display:block;font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;color:#aaa;">L'essentiel, sans détour</span>
+      </div>
+      <div style="width:60px;"></div>
+    </div>
+    <div id="legal-body" class="legal-body"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- ══════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════ -->
+<script>
+// ── CONFIG SUPABASE ──
+const SURL = 'https://litkainirdcidohxqiao.supabase.co';
+const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxpdGthaW5pcmRjaWRvaHhxaWFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2OTI4MTEsImV4cCI6MjA4ODI2ODgxMX0.yimAkW04XkaJs57b68nAI0WN_iuxOtaKPzpXllSqrV4';
+
+// ── COULEURS CATÉGORIES ──
+const CCOLORS = {
+  'Politique':          {bg:'#FEF2F2',tx:'#B91C1C',bd:'#FECACA'},
+  'Économie & Business':{bg:'#F0FDF4',tx:'#166534',bd:'#BBF7D0'},
+  'Société':            {bg:'#FFF7ED',tx:'#9A3412',bd:'#FED7AA'},
+  'Diaspora':           {bg:'#EFF6FF',tx:'#1D4ED8',bd:'#BFDBFE'},
+  'Opportunités':       {bg:'#FFFBEB',tx:'#92400E',bd:'#FDE68A'},
+  'International':      {bg:'#F5F3FF',tx:'#6D28D9',bd:'#DDD6FE'},
+  'Culture & Sport':    {bg:'#FDF4FF',tx:'#86198F',bd:'#F0ABFC'},
+  'Opinion':            {bg:'#F8FAFC',tx:'#334155',bd:'#CBD5E1'},
+};
+
+let articles = [];
+let activeCat = '';
+
+// ── DATE ──
+(()=>{
+  const d=new Date(),
+  jours=['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
+  mois=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  document.getElementById('hdate').textContent=`${jours[d.getDay()]} ${d.getDate()} ${mois[d.getMonth()]} ${d.getFullYear()}`;
+})();
+
+// ── HELPERS ──
+const gc  = a => a.category || a.cat || '';
+const gi  = a => a.image_url || a.img || '';
+const gco = a => a.content || a.body || '';
+function timeAgo(ts){
+  if(!ts)return'';
+  const s=(Date.now()-new Date(ts))/1000;
+  if(s<60)return"À l'instant";
+  if(s<3600)return`Il y a ${Math.round(s/60)} min`;
+  if(s<86400)return`Il y a ${Math.round(s/3600)}h`;
+  return new Date(ts).toLocaleDateString('fr-FR',{day:'numeric',month:'long'});
+}
+function readTime(t=''){return Math.max(1,Math.round(t.split(/\s+/).length/200))+' min';}
+function badge(cat){
+  const c=CCOLORS[cat]||{bg:'#F3F4F6',tx:'#374151',bd:'#E5E7EB'};
+  return`<span class="badge" style="background:${c.bg};color:${c.tx};border:1px solid ${c.bd};">${cat||'Général'}</span>`;
+}
+
+// ── FETCH SUPABASE ──
+async function fetchArticles(){
+  try{
+    const r=await fetch(`${SURL}/rest/v1/articles?select=*&order=created_at.desc`,{
+      headers:{'apikey':SKEY,'Authorization':'Bearer '+SKEY}
+    });
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    articles=await r.json()||[];
+  }catch(e){
+    articles=[];
+    document.getElementById('content').innerHTML=`
+    <div class="fin" style="text-align:center;padding:4rem 1rem;">
+      <div style="font-size:2.5rem;margin-bottom:1rem;">⚠️</div>
+      <h2 class="serif" style="font-size:1.4rem;margin-bottom:.6rem;">Erreur de connexion</h2>
+      <p style="color:#777;font-size:.85rem;max-width:360px;margin:0 auto 1.5rem;">${e.message}</p>
+      <button onclick="location.reload()" style="background:var(--ink);color:#fff;border:none;padding:.65rem 1.5rem;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:6px;">Réessayer</button>
+    </div>`;
+  }finally{
+    document.getElementById('skeleton').style.display='none';
+    document.getElementById('content').style.display='block';
+    renderAll();
+  }
+}
+
+// ── RENDER ──
+function renderAll(){
+  const q=(document.getElementById('searchinput')?.value||'').toLowerCase();
+  const list=articles.filter(a=>{
+    const mc=!activeCat||gc(a)===activeCat;
+    const mq=!q||a.title?.toLowerCase().includes(q)||gco(a).toLowerCase().includes(q);
+    return mc&&mq;
+  });
+
+  // Nav active state
+  document.querySelectorAll('.nlink').forEach(n=>n.classList.remove('on'));
+
+  const el=document.getElementById('content');
+  if(!list.length){
+    el.innerHTML=`
+    <div class="fin" style="text-align:center;padding:5rem 1rem;">
+      <div style="font-size:3rem;margin-bottom:1.2rem;">📰</div>
+      <h2 class="serif" style="font-size:1.6rem;font-weight:700;margin-bottom:.7rem;">Aucun article pour le moment</h2>
+      <p style="color:#888;font-size:.85rem;max-width:360px;margin:0 auto 2rem;">${q||activeCat?'Aucun résultat pour cette recherche.':'La rédaction n\'a pas encore publié d\'articles dans cette rubrique.'}</p>
+      ${!q&&!activeCat?`<button onclick="openAdmin()" style="background:var(--ink);color:#fff;border:none;padding:.68rem 1.6rem;font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:6px;">Publier le premier article</button>`:''}
+    </div>`;
+    return;
+  }
+
+  el.innerHTML=`<div class="fin">
+    ${heroHTML(list[0])}
+    ${list.length>1?gridHTML(list.slice(1)):''}
+  </div>`;
+}
+
+// ── HERO ──
+function heroHTML(a){
+  const cat=gc(a),img=gi(a),co=gco(a);
+  return`
+  <div style="display:grid;grid-template-columns:${img?'1.1fr 1fr':'1fr'};gap:1.8rem;align-items:center;padding-bottom:2rem;margin-bottom:2rem;border-bottom:1px solid var(--rule);">
+    ${img?`<div class="izoom" style="border-radius:4px;aspect-ratio:4/3;cursor:pointer;" onclick="openReader(${a.id})"><img src="${img}" alt="${a.title}"></div>`:''}
+    <div>
+      ${badge(cat)}
+      <h2 class="htitle" onclick="openReader(${a.id})" style="font-size:clamp(1.4rem,3vw,2.1rem);font-weight:900;line-height:1.2;color:var(--ink);margin:.7rem 0 .8rem;">${a.title}</h2>
+      ${co?`<p class="sserif" style="color:#555;font-size:.93rem;line-height:1.75;margin-bottom:1rem;">${co.slice(0,220)}${co.length>220?'…':''}</p>`:''}
+      <div style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;">
+        <span style="font-size:.68rem;color:#999;">${timeAgo(a.created_at)}</span>
+        ${co?`<span style="color:#ccc;">·</span><span style="font-size:.68rem;color:#999;">${readTime(co)} de lecture</span>`:''}
+        <button onclick="openReader(${a.id})" style="background:none;border:none;border-bottom:1px solid var(--rule);font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;color:#666;padding-bottom:.1rem;" onmouseover="this.style.color='var(--red)';this.style.borderColor='var(--red)'" onmouseout="this.style.color='#666';this.style.borderColor='var(--rule)'">Lire l'article →</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── GRID ──
+function gridHTML(list){
+  return`
+  <div>
+    <div style="border-top:3px solid var(--red);padding-top:.7rem;margin-bottom:1.3rem;">
+      <p style="font-size:.6rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#888;">À la une</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.5rem;">
+      ${list.map(a=>cardHTML(a)).join('')}
+    </div>
+  </div>`;
+}
+
+function cardHTML(a){
+  const cat=gc(a),img=gi(a),co=gco(a);
+  return`
+  <article onclick="openReader(${a.id})" style="cursor:pointer;padding-bottom:1.1rem;border-bottom:1px solid #ECEAE0;">
+    ${img?`<div class="izoom" style="border-radius:3px;aspect-ratio:16/10;margin-bottom:.7rem;"><img src="${img}" alt="${a.title}"></div>`:''}
+    ${badge(cat)}
+    <h3 class="htitle" style="font-size:1.02rem;font-weight:700;line-height:1.3;color:var(--ink);margin:.4rem 0 .4rem;">${a.title}</h3>
+    ${co?`<p style="font-size:.78rem;color:#777;line-height:1.6;margin-bottom:.45rem;">${co.slice(0,110)}…</p>`:''}
+    <span style="font-size:.63rem;color:#aaa;">${timeAgo(a.created_at)}${co?' · '+readTime(co):''}</span>
+  </article>`;
+}
+
+// ── READER ──
+function openReader(id){
+  const a=articles.find(x=>x.id===id);if(!a)return;
+  const cat=gc(a),img=gi(a),co=gco(a);
+  const paras=co.split(/\n+/).filter(Boolean);
+  const cc=CCOLORS[cat]||{bg:'#F3F4F6',tx:'#374151',bd:'#E5E7EB'};
+  document.getElementById('reader-body').innerHTML=`
+    <span class="badge" style="background:${cc.bg};color:${cc.tx};border:1px solid ${cc.bd};">${cat||'Général'}</span>
+    <h1 class="serif" style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:900;line-height:1.2;color:var(--ink);margin:.8rem 0 .9rem;">${a.title}</h1>
+    <div style="display:flex;gap:.6rem;align-items:center;margin-bottom:1.5rem;padding-bottom:1.2rem;border-bottom:1px solid var(--rule);">
+      <span class="ldot"></span>
+      <span style="font-size:.7rem;color:#888;">${timeAgo(a.created_at)}</span>
+      ${co?`<span style="color:#ddd;">·</span><span style="font-size:.7rem;color:#888;">${readTime(co)} de lecture</span>`:''}
+    </div>
+    ${img?`<div style="border-radius:4px;overflow:hidden;margin-bottom:1.8rem;max-height:420px;"><img src="${img}" alt="${a.title}" style="width:100%;max-height:420px;object-fit:cover;"></div>`:''}
+    <div class="sserif" style="font-size:1.05rem;line-height:1.9;color:#3d3d3d;">
+      ${paras.map(p=>`<p style="margin-bottom:1.3em;">${p}</p>`).join('')}
+    </div>
+    <div style="margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--rule);text-align:center;">
+      <p style="font-size:.72rem;color:#aaa;margin-bottom:.5rem;">Une erreur dans cet article ?</p>
+      <button onclick="closeLegal();openLegal('correction')" style="background:none;border:none;font-size:.68rem;color:var(--red);cursor:pointer;text-decoration:underline;">Signaler une erreur</button>
+    </div>`;
+  document.getElementById('reader').classList.add('open');
+  document.getElementById('reader').scrollTop=0;
+  document.body.style.overflow='hidden';
+}
+function closeReader(){
+  document.getElementById('reader').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+// ── FILTER / SEARCH ──
+function filterCat(cat){
+  activeCat=cat;
+  closeMob();
+  document.getElementById('searchinput').value='';
+  renderAll();
+  window.scrollTo(0,0);
+}
+function toggleSearch(){
+  const b=document.getElementById('searchbar');
+  b.style.display=b.style.display==='none'||!b.style.display?'block':'none';
+  if(b.style.display==='block')document.getElementById('searchinput').focus();
+}
+function closeMob(){document.getElementById('mobmenu').classList.remove('open');}
+
+// ── ADMIN ──
+function openAdmin(){document.getElementById('admin').classList.add('open');document.body.style.overflow='hidden';}
+function closeAdmin(){document.getElementById('admin').classList.remove('open');document.body.style.overflow='';}
+function handleAdminBg(e){if(e.target===document.getElementById('admin'))closeAdmin();}
+
+function checkForm(){
+  const t=document.getElementById('a-title').value.trim();
+  const c=document.getElementById('a-cat').value;
+  const b=document.getElementById('a-body').value.trim();
+  const ok=t&&c&&b;
+  const btn=document.getElementById('pub-btn');
+  btn.disabled=!ok;
+  btn.style.background=ok?'var(--ink)':'#ccc';
+  btn.style.cursor=ok?'pointer':'not-allowed';
+  document.getElementById('fstatus').textContent=ok?'✓ Prêt à publier':'Remplissez les champs obligatoires (*)';
+  document.getElementById('fstatus').style.color=ok?'#166534':'#aaa';
+}
+
+function prevImg(){
+  const url=document.getElementById('a-img').value.trim();
+  const wrap=document.getElementById('imgprev');
+  const img=document.getElementById('imgprevimg');
+  if(!url){wrap.style.display='none';return;}
+  img.src=url;
+  img.onload=()=>wrap.style.display='block';
+  img.onerror=()=>wrap.style.display='none';
+}
+
+async function publishArticle(){
+  const title=document.getElementById('a-title').value.trim();
+  const category=document.getElementById('a-cat').value;
+  const image_url=document.getElementById('a-img').value.trim()||null;
+  const content=document.getElementById('a-body').value.trim();
+  if(!title||!category||!content)return;
+  const btn=document.getElementById('pub-btn');
+  btn.textContent='Publication…';btn.disabled=true;
+  try{
+    const r=await fetch(`${SURL}/rest/v1/articles`,{
+      method:'POST',
+      headers:{'apikey':SKEY,'Authorization':'Bearer '+SKEY,'Content-Type':'application/json','Prefer':'return=representation'},
+      body:JSON.stringify({title,category,image_url,content})
+    });
+    if(!r.ok){const e=await r.json().catch(()=>{});throw new Error(e.message||'HTTP '+r.status);}
+    const rows=await r.json();
+    const newArt=Array.isArray(rows)?rows[0]:rows;
+    if(newArt)articles.unshift(newArt);
+    closeAdmin();
+    ['a-title','a-cat','a-img','a-body'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('imgprev').style.display='none';
+    document.getElementById('fstatus').textContent='Remplissez les champs obligatoires (*)';
+    renderAll();
+    showToast('🚀 Article publié avec succès !');
+  }catch(e){
+    showToast('❌ Erreur : '+e.message,true);
+  }finally{
+    btn.textContent='🚀 Publier';
+    checkForm();
+  }
+}
+
+// ── LEGAL PAGES ──
+const LEGAL = {
+
+  about:`
+    <h2>À propos du Moment</h2>
+    <div class="info-box"><p><strong>Le Moment</strong> est un média numérique indépendant fondé à Douala, Cameroun, en 2026.</p></div>
+    <h3>Notre mission</h3>
+    <p>Rendre accessible l'information essentielle sur le Cameroun et l'Afrique — pour les lecteurs locaux comme pour la diaspora africaine à travers le monde.</p>
+    <h3>Notre ligne éditoriale</h3>
+    <p>Nous couvrons l'actualité politique, économique et sociale du Cameroun avec rigueur et indépendance. Notre ambition est de donner accès à des informations qui, faute d'être numérisées, restent souvent inaccessibles à ceux qui vivent à l'étranger.</p>
+    <h3>Notre slogan</h3>
+    <p><em>"L'essentiel, sans détour."</em> — Nous allons à l'essentiel, sans complaisance ni sensationnalisme.</p>
+    <h3>Direction</h3>
+    <p>Le Moment est fondé et dirigé par <strong>Tutu Tina</strong>, basé(e) à Douala, Cameroun.</p>`,
+
+  contact:`
+    <h2>Nous contacter</h2>
+    <h3>Rédaction</h3>
+    <p>Pour toute proposition d'article, information ou signalement :<br>📧 <a href="mailto:redaction@lemoment.cm">redaction@lemoment.cm</a></p>
+    <h3>Direction de la publication</h3>
+    <p><strong>Tutu Tina</strong> — Directeur(trice) de publication<br>📧 <a href="mailto:direction@lemoment.cm">direction@lemoment.cm</a></p>
+    <h3>Publicité & Partenariats</h3>
+    <p>📧 <a href="mailto:pub@lemoment.cm">pub@lemoment.cm</a></p>
+    <h3>Adresse</h3>
+    <p>Le Moment<br>Douala, Cameroun — Région du Littoral</p>
+    <div class="info-box"><p>Nous répondons à tous les emails dans un délai de 48 heures ouvrables.</p></div>`,
+
+  charter:`
+    <h2>Charte éditoriale</h2>
+    <h3>Nos engagements</h3>
+    <ul>
+      <li>Publier une information vérifiée avant diffusion</li>
+      <li>Distinguer clairement information, analyse et opinion</li>
+      <li>Donner la parole aux différentes parties prenantes</li>
+      <li>Corriger toute erreur dans les 48 heures</li>
+      <li>Identifier clairement tout contenu sponsorisé</li>
+    </ul>
+    <h3>Ce que nous ne faisons pas</h3>
+    <ul>
+      <li>Nous ne publions pas de rumeurs non vérifiées</li>
+      <li>Nous ne publions pas de contenus haineux ou discriminatoires</li>
+      <li>Nous ne confondons pas publicité et information</li>
+      <li>Nous n'acceptons pas d'argent pour orienter notre ligne éditoriale</li>
+    </ul>
+    <h3>La rubrique Opinion</h3>
+    <p>Les tribunes et analyses publiées dans la rubrique Opinion représentent le point de vue de leurs auteurs et non la position officielle du Moment.</p>`,
+
+  advertise:`
+    <h2>Publicité & Partenariats</h2>
+    <h3>Notre audience</h3>
+    <p>Le Moment touche les Camerounais locaux, la diaspora africaine en Europe et en Amérique, ainsi que les professionnels et hommes d'affaires intéressés par l'Afrique centrale.</p>
+    <h3>Formats disponibles</h3>
+    <ul>
+      <li>Bannière en haut de page</li>
+      <li>Article sponsorisé (clairement identifié)</li>
+      <li>Encart dans la newsletter</li>
+      <li>Partenariat de contenu</li>
+    </ul>
+    <div class="info-box"><p>Tout contenu publicitaire est systématiquement identifié comme tel. Aucun annonceur ne peut influencer notre ligne éditoriale.</p></div>
+    <h3>Contact</h3>
+    <p>📧 <a href="mailto:pub@lemoment.cm">pub@lemoment.cm</a></p>`,
+
+  legal:`
+    <h2>Mentions légales</h2>
+    <h3>Éditeur du site</h3>
+    <p><strong>Le Moment</strong><br>Média numérique indépendant<br>Siège : Douala, Cameroun — Région du Littoral<br>📧 <a href="mailto:contact@lemoment.cm">contact@lemoment.cm</a></p>
+    <h3>Directeur de la publication</h3>
+    <p>Tutu Tina</p>
+    <h3>Hébergement</h3>
+    <p>Base de données : Supabase Inc.<br>550 Montgomery Street, Suite 1000<br>San Francisco, CA 94111 — États-Unis<br><a href="https://supabase.com" target="_blank">supabase.com</a></p>
+    <h3>Propriété intellectuelle</h3>
+    <p>L'ensemble des contenus publiés sur Le Moment sont la propriété de Le Moment ou de leurs auteurs. Toute reproduction sans autorisation écrite est interdite.</p>
+    <h3>Droit applicable</h3>
+    <p>Ce site est soumis au droit camerounais. Tout litige sera soumis aux tribunaux compétents de Douala, Cameroun.</p>`,
+
+  privacy:`
+    <h2>Politique de confidentialité</h2>
+    <h3>Données collectées</h3>
+    <p>Le Moment collecte uniquement les adresses email des personnes qui s'inscrivent volontairement à la newsletter ou qui nous contactent.</p>
+    <h3>Utilisation des données</h3>
+    <ul>
+      <li>Envoi de la newsletter (si vous y êtes abonné)</li>
+      <li>Réponse à vos demandes de contact</li>
+    </ul>
+    <h3>Partage des données</h3>
+    <p>Le Moment ne vend jamais vos données personnelles et ne les communique à aucun tiers.</p>
+    <h3>Vos droits</h3>
+    <p>Vous pouvez demander l'accès, la rectification ou la suppression de vos données :<br>📧 <a href="mailto:contact@lemoment.cm">contact@lemoment.cm</a></p>
+    <h3>Cookies</h3>
+    <p>Le Moment n'utilise que des cookies techniques essentiels au fonctionnement du site. Aucun cookie publicitaire ou de traçage n'est utilisé.</p>`,
+
+  cookies:`
+    <h2>Gestion des cookies</h2>
+    <h3>Ce que nous utilisons</h3>
+    <p>Le Moment utilise uniquement des <strong>cookies techniques essentiels</strong> au bon fonctionnement du site. Aucun cookie publicitaire ni de traçage.</p>
+    <h3>Ce que nous n'utilisons pas</h3>
+    <ul>
+      <li>❌ Cookies publicitaires</li>
+      <li>❌ Cookies de traçage comportemental</li>
+      <li>❌ Google Analytics ou outils similaires</li>
+      <li>❌ Cookies de réseaux sociaux tiers</li>
+    </ul>
+    <h3>Gestion</h3>
+    <p>Vous pouvez supprimer les cookies à tout moment via les paramètres de votre navigateur, sans affecter votre navigation sur le site.</p>`,
+
+  correction:`
+    <h2>Signaler une erreur</h2>
+    <p>Le Moment s'engage à publier une information exacte. Malgré nos efforts, des erreurs peuvent survenir. Aidez-nous à les corriger.</p>
+    <h3>Comment signaler</h3>
+    <p>Envoyez-nous un email en précisant :</p>
+    <ul>
+      <li>Le titre de l'article concerné</li>
+      <li>L'erreur constatée</li>
+      <li>La correction suggérée avec, si possible, une source</li>
+    </ul>
+    <p>📧 <a href="mailto:correction@lemoment.cm">correction@lemoment.cm</a></p>
+    <div class="info-box"><p>Nous traitons chaque signalement dans un délai de <strong>48 heures</strong>. Si l'erreur est confirmée, une note de correction est ajoutée en bas de l'article.</p></div>`,
+
+  newsletter:`
+    <h2>S'abonner à la newsletter</h2>
+    <p>Recevez chaque matin l'essentiel de l'actualité camerounaise et africaine directement dans votre boîte email.</p>
+    <div class="info-box"><p>📧 Envoyez un email à <a href="mailto:newsletter@lemoment.cm">newsletter@lemoment.cm</a> avec le sujet <strong>"Abonnement"</strong> pour vous inscrire gratuitement.</p></div>
+    <h3>Ce que vous recevrez</h3>
+    <ul>
+      <li>Les titres du jour au Cameroun</li>
+      <li>Les opportunités business de la semaine</li>
+      <li>Les informations essentielles pour la diaspora</li>
+    </ul>
+    <p style="font-size:.82rem;color:#888;">Vous pouvez vous désabonner à tout moment en répondant "Désabonnement" à n'importe quel email reçu.</p>`
+};
+
+function openLegal(page){
+  const c=LEGAL[page];
+  if(!c)return;
+  document.getElementById('legal-body').innerHTML=c;
+  document.getElementById('legal-ov').classList.add('open');
+  document.getElementById('legal-ov').scrollTop=0;
+  document.body.style.overflow='hidden';
+}
+function closeLegal(){
+  document.getElementById('legal-ov').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+// ── TOAST ──
+let tT;
+function showToast(msg,err=false){
+  const el=document.getElementById('toast');
+  el.textContent=msg;
+  el.style.borderLeft=`3px solid ${err?'var(--red)':'var(--gold)'}`;
+  el.classList.add('show');
+  clearTimeout(tT);
+  tT=setTimeout(()=>el.classList.remove('show'),3500);
+}
+
+// ── INIT ──
+fetchArticles();
+</script>
+</body>
+</html>
